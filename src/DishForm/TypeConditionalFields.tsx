@@ -50,7 +50,7 @@ const TypeConditionField = ({ name, ...rest }) => (
     {...rest}
   />
 );
-function TypeConditionFields(type: DishType) {
+function TypeConditionalFields(type: DishType) {
   switch (type) {
     case 'pizza':
       return (
@@ -96,7 +96,7 @@ function TypeConditionFields(type: DishType) {
   }
 }
 
-export default TypeConditionFields;
+export default TypeConditionalFields;
 
 function parseNumericInput(value: any, name: string) {
   // We have to return undefined to remove

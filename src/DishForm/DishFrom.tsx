@@ -11,7 +11,7 @@ import { Form, Field } from 'react-final-form';
 import { valueRequired, timeRequired } from './utils';
 import TypeConditionFields, {
   renderNumericTextField,
-} from './TypeConditionFields';
+} from './TypeConditionalFields';
 
 const renderTextField = ({
   input,
