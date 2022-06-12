@@ -124,7 +124,6 @@ function DishForm() {
               </Button>
             </Box>
           </Box>
-          <pre>{JSON.stringify(values, null, 2)}</pre>
         </form>
       )}
     />
