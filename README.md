@@ -1,6 +1,6 @@
 <br />
 
-## [Live Preview](<>)
+## [Live Preview](https://dish-form-two.vercel.app/)
 
 <br />
 <br />
@@ -27,7 +27,7 @@ Fields validation is combined of react-final-form and react-number-format, becau
 ## Development Guide 🛠
 
 ```
-git clone <>
+git clone https://github.com/jakubjarek/dish-form
 npm install
 npm start
 ```
