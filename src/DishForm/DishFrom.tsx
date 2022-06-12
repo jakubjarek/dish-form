@@ -7,10 +7,32 @@ import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { Form, Field } from 'react-final-form';
-import NumberFormat from 'react-number-format';
 
 import { valueRequired, timeRequired } from './utils';
-import TypeConditionFields from './TypeConditionFIelds';
+import TypeConditionFields, {
+  renderNumericTextField,
+} from './TypeConditionFields';
+
+const renderTextField = ({
+  input,
+  meta,
+  ...rest
+}: {
+  // no idea how to type these properly :(
+  input: any;
+  meta: any;
+}) => (
+  <TextField
+    name={input.name}
+    value={input.value}
+    onChange={input.onChange}
+    error={meta.error && meta.touched}
+    helperText={meta.error && meta.touched && `${meta.error}`}
+    inputProps={{ maxLength: '40' }}
+    {...input}
+    {...rest}
+  />
+);
 
 function DishForm() {
   return (
@@ -34,39 +56,25 @@ function DishForm() {
                 flexDirection: 'column',
               }}
             >
-              <Field name="name" validate={valueRequired}>
-                {({ input, meta }) => (
-                  <TextField
-                    label="Name"
-                    name={input.name}
-                    value={input.value}
-                    onChange={input.onChange}
-                    inputProps={{ maxLength: '40' }}
-                    error={meta.error && meta.touched}
-                    placeholder={`Name of the ${
-                      values.type ? values.type : 'dish'
-                    }`}
-                    helperText={meta.error && meta.touched && `${meta.error}`}
-                  />
-                )}
-              </Field>
+              <Field
+                component={renderTextField}
+                validate={valueRequired}
+                name="name"
+                label="Name"
+                placeholder={`Name of the ${
+                  values.type ? values.type : 'dish'
+                }`}
+              />
 
-              <Field name="preparation_time" validate={timeRequired}>
-                {({ input, meta }) => (
-                  <NumberFormat
-                    format="##:##:##"
-                    name={input.name}
-                    value={input.value}
-                    placeholder="HH:MM:SS"
-                    customInput={TextField}
-                    label="Preparation time"
-                    onChange={input.onChange}
-                    error={meta.error && meta.touched}
-                    mask={['H', 'H', 'M', 'M', 'S', 'S']}
-                    helperText={meta.error && meta.touched && `${meta.error}`}
-                  />
-                )}
-              </Field>
+              <Field
+                component={renderNumericTextField}
+                validate={timeRequired}
+                name="preparation_time"
+                label="Preparation time"
+                placeholder="HH:MM:SS"
+                numberFormat="##:##:##"
+                mask={['H', 'H', 'M', 'M', 'S', 'S']}
+              />
 
               <Field name="type" validate={valueRequired}>
                 {({ input, meta }) => (
@@ -116,6 +124,7 @@ function DishForm() {
               </Button>
             </Box>
           </Box>
+          <pre>{JSON.stringify(values, null, 2)}</pre>
         </form>
       )}
     />
@@ -141,7 +150,11 @@ async function handleFormSubmit(values: any) {
     alert(JSON.stringify(resJson, null, 2));
   } catch (error) {
     // Our code never produces any errors 🤠
-    console.log(error);
+    //
+    // Submitting the form should not produce
+    // any errors (besides network and server),
+    // since we don't allow for anything wrong to get send.
+    alert(`An error has occured\n ${error}`);
   }
 }
 

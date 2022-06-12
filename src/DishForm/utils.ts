@@ -18,7 +18,7 @@ export const withSpicinessScale = ({ value }: { value: string }) => {
 };
 
 export const valueRequired = (value: any) =>
-  value ? undefined : 'We need some content in here 🦔';
+  value || +value === 0 ? undefined : 'We need some content in here 🦔';
 
 export const timeRequired = (value: any) => {
   if (!value) return valueRequired(value);

@@ -11,100 +11,86 @@ import {
 
 type DishType = 'pizza' | 'soup' | 'sandwich';
 
+export const renderNumericTextField = ({
+  input,
+  meta,
+  numberFormat,
+  mask,
+  ...rest
+}: {
+  // no idea how to type these properly :(
+  input: any;
+  meta: any;
+  numberFormat?: string;
+  mask?: string;
+}) => (
+  <NumberFormat
+    customInput={TextField}
+    name={input.name}
+    value={input.value}
+    onChange={input.onChange}
+    error={meta.error && meta.touched}
+    helperText={meta.error && meta.touched && `${meta.error}`}
+    isNumericString={!mask && true}
+    format={numberFormat}
+    mask={mask}
+    {...input}
+    {...rest}
+  />
+);
+
+//@ts-ignore no idea how to type these properly :(
+const TypeConditionField = ({ name, ...rest }) => (
+  <Field
+    component={renderNumericTextField}
+    validate={valueRequired}
+    parse={parseNumericInput}
+    format={parseNumericInput}
+    name={name}
+    {...rest}
+  />
+);
 function TypeConditionFields(type: DishType) {
   switch (type) {
     case 'pizza':
       return (
         <>
-          <Field
+          <TypeConditionField
             name="no_of_slices"
-            parse={parseNumericInput}
-            validate={valueRequired}
-          >
-            {({ input, meta }) => (
-              <NumberFormat
-                label="Slices"
-                name={input.name}
-                value={input.value}
-                isNumericString={true}
-                customInput={TextField}
-                onChange={input.onChange}
-                isAllowed={withIntegersOnly}
-                placeholder="Number of slices"
-                error={meta.error && meta.touched}
-                helperText={meta.error && meta.touched && `${meta.error}`}
-              />
-            )}
-          </Field>
-          <Field
+            label="Slices"
+            placeholder="Number of slices"
+            isAllowed={withIntegersOnly}
+          />
+
+          <TypeConditionField
             name="diameter"
-            format={parseNumericInput}
-            parse={parseNumericInput}
-            validate={valueRequired}
-          >
-            {({ input, meta }) => (
-              <NumberFormat
-                label="Diameter"
-                name={input.name}
-                value={input.value}
-                isNumericString={true}
-                customInput={TextField}
-                onChange={input.onChange}
-                isAllowed={withFloatsOnly}
-                error={meta.error && meta.touched}
-                placeholder="Diameter of the pizza"
-                helperText={meta.error && meta.touched && `${meta.error}`}
-              />
-            )}
-          </Field>
+            label="Diameter"
+            placeholder="Diameter of the pizza"
+            isAllowed={withFloatsOnly}
+          />
         </>
       );
+
     case 'soup':
       return (
-        <Field
+        <TypeConditionField
           name="spiciness_scale"
-          parse={parseNumericInput}
-          validate={valueRequired}
-        >
-          {({ input, meta }) => (
-            <NumberFormat
-              label="Spiciness"
-              name={input.name}
-              value={input.value}
-              isNumericString={true}
-              customInput={TextField}
-              onChange={input.onChange}
-              isAllowed={withSpicinessScale}
-              error={meta.error && meta.touched}
-              placeholder="Spiciness scale (1-10)"
-              helperText={meta.error && meta.touched && `${meta.error}`}
-            />
-          )}
-        </Field>
+          label="Spiciness"
+          placeholder="Spiciness scale (1-10)"
+          isAllowed={withSpicinessScale}
+        />
       );
+
     case 'sandwich':
       return (
-        <Field
+        <TypeConditionField
           name="slices_of_bread"
-          parse={parseNumericInput}
-          validate={valueRequired}
-        >
-          {({ input, meta }) => (
-            <NumberFormat
-              label="Slices"
-              name={input.name}
-              value={input.value}
-              isNumericString={true}
-              customInput={TextField}
-              onChange={input.onChange}
-              isAllowed={withIntegersOnly}
-              placeholder="Number of slices"
-              error={meta.error && meta.touched}
-              helperText={meta.error && meta.touched && `${meta.error}`}
-            />
-          )}
-        </Field>
+          label="Slices"
+          placeholder="Number of slices"
+          isAllowed={withIntegersOnly}
+        />
       );
+
     default:
       return null;
   }
